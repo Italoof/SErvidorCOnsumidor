@@ -86,7 +86,13 @@
          </widget>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="horizontalSliderTiming">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>10</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>

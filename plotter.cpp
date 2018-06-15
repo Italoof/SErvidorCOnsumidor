@@ -13,7 +13,13 @@ void Plotter::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QPen pen;
+    QPen pengrid;
     QBrush brush;
+    int igridH=0;
+    int igridV=0;
+
+
+    //grid.setStyle(Qt::PenStyle gridStyle());
 
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -22,11 +28,28 @@ void Plotter::paintEvent(QPaintEvent *event)
 
     painter.setBrush(brush);
 
-    pen.setColor(QColor(255,0,0));
+    pen.setColor(QColor(255,255,0));
     pen.setWidth(2);
 
     painter.setPen(pen);
 
     painter.drawRect(0,0,width(), height());
+
+    pengrid.setStyle(Qt::DashLine);
+    pengrid.setWidth(1);
+    pengrid.setColor(QColor(100,100,100));
+    painter.setPen(pengrid);
+
+
+    while( igridV< width()){
+
+        painter.drawLine(igridV, 0, igridV, height());
+        igridV+=width()/15;
+    }
+
+    while (igridH<height()){
+        painter.drawLine(0,igridH, width(), igridH);
+        igridH+=height()/15;
+    }
 }
 

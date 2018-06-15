@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
   socket = new QTcpSocket(this);
+  nTimers=0;
   tcpConnect();
 
   connect(ui->pushButtonConnect,
@@ -22,8 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->pushButtonStart,
           SIGNAL(clicked(bool)),
-                 this,
-                 SLOT(getData()));
+          this,
+          SLOT(startButtom()));
+
+  connect(ui->pushButtonStop,
+          SIGNAL(clicked(bool)),
+          this,
+          SLOT(stopButtom()));
 }
 
 void MainWindow::tcpConnect(){
@@ -70,7 +76,8 @@ void MainWindow::getData(){
   QStringList list;
   qint64 thetime;
   qDebug() << "to get data...";
-  array=QByteArray("get "+ui->lineEdit->text().toUtf8()+" 5\r\n");
+  array=QByteArray("get "+ui->lineEdit->text().toUtf8()+" 30\r\n");
+  qDebug()<<array;
   if(socket->state() == QAbstractSocket::ConnectedState){
     if(socket->isOpen()){
       qDebug() << "reading...";

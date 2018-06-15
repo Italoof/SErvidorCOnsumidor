@@ -13,6 +13,9 @@ class MainWindow : public QMainWindow
 {
   Q_OBJECT
 
+    int nTimers;
+    int id;
+
 public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
@@ -23,6 +26,8 @@ public slots:
   void getData();
   void tcpConnect();
   void tcpDisconnect();
+  void startButtom();
+  void stopButtom();
 private:
   Ui::MainWindow *ui;
   QTcpSocket *socket;
