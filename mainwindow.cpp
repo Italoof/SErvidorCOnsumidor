@@ -74,6 +74,7 @@ void MainWindow::getData(){
   QString str;
   QByteArray array;
   QStringList list;
+  std::vector <qint64> auxtempo;
   qint64 thetime;
   qDebug() << "to get data...";
   array=QByteArray("get "+ui->lineEdit->text().toUtf8()+" 30\r\n");
@@ -91,10 +92,16 @@ void MainWindow::getData(){
         if(list.size() == 2){
           bool ok;
           str = list.at(0);
+          qDebug() <<"list.at(0)=" <<str<<"\n\r";
           thetime = str.toLongLong(&ok);
+          auxtempo.push_back(thetime);
           str = list.at(1);
+          valor.push_back(str.toFloat());
           qDebug() << thetime << ": " << str;
         }
+      }
+      for (int i=0; i<auxtempo.size(); i++){
+        tempo.push_back((float)((auxtempo[i]-auxtempo[0])/(auxtempo[auxtempo.size()-1]-auxtempo[0])));
       }
     }
   }

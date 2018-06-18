@@ -51,5 +51,17 @@ void Plotter::paintEvent(QPaintEvent *event)
         painter.drawLine(0,igridH, width(), igridH);
         igridH+=height()/15;
     }
+
+    pen.setStyle(Qt::SolidLine);
+    pen.width(2);
+
+}
+
+void Plotter::recebeDados(vector<float> tempo_, vector<float> valor_)
+{
+    tempo=tempo_;
+    valor=valor_;
+
+    repaint();
 }
 
