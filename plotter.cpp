@@ -3,6 +3,7 @@
 #include <Qpen>
 #include <QPainter>
 #include <QColor>
+#include <QDebug>
 
 Plotter::Plotter(QWidget *parent) : QWidget(parent)
 {
@@ -17,9 +18,6 @@ void Plotter::paintEvent(QPaintEvent *event)
     QBrush brush;
     int igridH=0;
     int igridV=0;
-
-
-    //grid.setStyle(Qt::PenStyle gridStyle());
 
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -53,8 +51,15 @@ void Plotter::paintEvent(QPaintEvent *event)
     }
 
     pen.setStyle(Qt::SolidLine);
-    pen.width(2);
+    pen.setWidth(2);
+    pen.setColor(QColor(255,0,0));
 
+    painter.setPen(pen);
+
+    for(int i=0; i<(tempo.size()-1) && tempo.size()!=0; i++){
+        painter.drawLine(width()-width()*tempo[i], height()-height()*(valor[i]*0.01),
+                     width()-width()*tempo[i+1], height()-height()*(valor[i+1]*0.01));
+    }
 }
 
 void Plotter::recebeDados(vector<float> tempo_, vector<float> valor_)
@@ -62,6 +67,6 @@ void Plotter::recebeDados(vector<float> tempo_, vector<float> valor_)
     tempo=tempo_;
     valor=valor_;
 
-    repaint();
+    repaint(); 
 }
 

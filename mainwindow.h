@@ -10,13 +10,14 @@ namespace Ui {
 class MainWindow;
 }
 
+using namespace std;
+
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
 
     int nTimers;
     int id;
-    std::vector <float> tempo, valor;
 
 public:
   explicit MainWindow(QWidget *parent = 0);
@@ -24,16 +25,16 @@ public:
 
     void timerEvent(QTimerEvent * event);
 
-    void enviarDados();
 public slots:
   void getData();
   void tcpConnect();
   void tcpDisconnect();
   void startButtom();
   void stopButtom();
+  void listaIps();
 
 signals:
-  std::vector <float> emiteDados(std::vector<float>, std::vector<float>);
+  vector <float> emiteDados(vector<float>, vector<float>);
 
 private:
   Ui::MainWindow *ui;

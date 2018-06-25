@@ -30,6 +30,16 @@ MainWindow::MainWindow(QWidget *parent) :
           SIGNAL(clicked(bool)),
           this,
           SLOT(stopButtom()));
+
+  connect(this,
+          SIGNAL(emiteDados(vector<float>,vector<float>)),
+          ui->widget,
+          SLOT(recebeDados(vector<float>,vector<float>)));
+
+  connect(ui->pushButtonUpdate,
+          SIGNAL(clicked(bool)),
+          this,
+          SLOT(listaIps()));
 }
 
 void MainWindow::tcpConnect(){
@@ -74,8 +84,9 @@ void MainWindow::getData(){
   QString str;
   QByteArray array;
   QStringList list;
-  std::vector <qint64> auxtempo;
+  vector <qint64> auxtempo;
   qint64 thetime;
+  vector <float> tempo, valor;
   qDebug() << "to get data...";
   array=QByteArray("get "+ui->lineEdit->text().toUtf8()+" 30\r\n");
   qDebug()<<array;
@@ -92,7 +103,6 @@ void MainWindow::getData(){
         if(list.size() == 2){
           bool ok;
           str = list.at(0);
-          qDebug() <<"list.at(0)=" <<str<<"\n\r";
           thetime = str.toLongLong(&ok);
           auxtempo.push_back(thetime);
           str = list.at(1);
@@ -101,14 +111,31 @@ void MainWindow::getData(){
         }
       }
       for (int i=0; i<auxtempo.size(); i++){
-        tempo.push_back((float)((auxtempo[i]-auxtempo[0])/(auxtempo[auxtempo.size()-1]-auxtempo[0])));
+        tempo.push_back(((float)(auxtempo[i]-auxtempo[0])/(auxtempo[auxtempo.size()-1]-auxtempo[0])));
       }
     }
+    emit emiteDados(tempo, valor);
   }
 }
 
 void MainWindow:: timerEvent(QTimerEvent *event){
     getData();
+}
+
+void MainWindow::listaIps()
+{
+      QString ip;
+      QStringList iplist;
+      socket->write("list");
+      socket->waitForBytesWritten();
+      socket->waitForReadyRead();
+      socket->bytesAvailable();
+      while(socket->bytesAvailable()){
+          ip=socket->readLine();
+          iplist<<ip;
+      }
+      ui->listWidget->clear();
+      ui->listWidget->addItems(iplist);
 }
 
 MainWindow::~MainWindow()
